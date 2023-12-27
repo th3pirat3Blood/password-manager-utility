@@ -17,7 +17,12 @@ python3 password_manager.py --help
 
 For generating new password
 ```bash
-python3 password_manager.py -g <password_length>
+python3 password_manager.py -g
+```
+
+For generating new password of length 12 using alphabets and numerals
+```bash
+python3 password_manager_cmd.py -g --length 12 --a0
 ```
 
 For saving password to the list of old passwords
