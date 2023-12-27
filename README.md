@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-# password-manager-utility
-=======
-# README
+# Password Manager Utility
 ---
 
 ## Description
