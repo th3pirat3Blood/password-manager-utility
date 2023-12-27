@@ -55,15 +55,3 @@ class SymEnc:
 
         print(f"Decrypted data in {file_name}.dec")
 
-
-def test_code():
-    obj1 = SymEnc()
-    # obj1.display_sym_key()
-    # obj1.put_sym_key_to_file("samples/sym_key.key")
-    # obj1.get_sym_key_from_file("samples/sym_key.key")
-
-    obj1.encrypt_file("samples/file_to_encrypt.txt")
-    obj1.decrypt_file("samples/file_to_encrypt.txt.enc")
-
-
-test_code()

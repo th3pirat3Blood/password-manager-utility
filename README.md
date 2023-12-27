@@ -34,5 +34,3 @@ For getting single password from list
 ```bash
 python3 password_manager.py -d -u <username/email_id> <password_filename.enc> <key>
 ```
-
->>>>>>> 8748e8e (added to README)
