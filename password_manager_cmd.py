@@ -4,7 +4,7 @@
     This file handles the command line utility of the password manager tool
 """
 
-from Cryptor_tool import SymEnc
+from Cryptor_tool import SymEnc, PasswordGenerator
 from file_manager import FileHandler
 import argparse
 
@@ -14,12 +14,12 @@ if __name__ == "__main__":
 
     # For password generation
     parser.add_argument("-g", "--gen", help="generate a new password", action="store_true")
-    parser.add_argument("--length", help="specify length of password to be generated", default=12, type=int,
-                        required=False, metavar="NUMBER")
+    parser.add_argument("-l", "--length", help="specify length of password to be generated", default=12,
+                        type=int, required=False, metavar="NUMBER")
     parser.add_argument("--alpha", help="generate passwords using only alphabets", required=False,
                         action="store_true")
-    parser.add_argument("--alpha-decimal", help="generate passwords using only alpha numerals", required=False,
-                        action="store_true")
+    parser.add_argument("--alpha-decimal", help="generate passwords using only alpha numerals",
+                        required=False, action="store_true")
     parser.add_argument("--all", help="generate passwords using alphanumerical and special characters",
                         required=False, action="store_true")
 
@@ -36,15 +36,50 @@ if __name__ == "__main__":
 
     arguments = parser.parse_args()
 
+    # Generate password
     if arguments.gen:
-        # Todo: Generate password based on other arguments
-        print("Generate password")
+        choice = 3
         if arguments.alpha:
-            pass
+            choice = 1
+        if arguments.alpha_decimal:
+            choice = 2
+        if arguments.all:
+            choice = 3
+        obj_PassGen = PasswordGenerator(choice, arguments.length)
+        print(f" Generated password: {obj_PassGen.generate()}")
+
+    # Encrypt
     elif arguments.enc:
-        # Todo: Encrypt something
-        print("Encrypt something")
+        if arguments.text is None and arguments.file is None:
+            print(" Error: Encryption requires either a text (-t) or a file (-f) to encrypt")
+            exit(0)
+        obj_SymEnc = SymEnc(f_name=arguments.key_file, k=arguments.key)
+        if arguments.text is not None:
+            obj_SymEnc.encrypt_data("text", text=arguments.text)
+            print(f" Encrypted data:\n{obj_SymEnc.encrypted_text}")
+
+        if arguments.file is not None and arguments.out is not None:
+            obj_SymEnc.encrypt_data("file", input_file=arguments.file, output_file=arguments.out)
+            print(f" Wrote encrypted data to: {arguments.out}")
+        else:
+            print(" Error: Requires input file (-f) along with output file (-o)")
+            exit(0)
+
+    # Decrypt
     elif arguments.dec:
-        # Todo: Decrypt something
-        print("Decrypt something")
+        if arguments.text is None and arguments.file is None:
+            print(" Error: Decryption requires either a text (-t) or a file (-f) to decrypt")
+            exit(0)
+        obj_SymEnc = SymEnc(f_name=arguments.key_file, k=arguments.key)
+        if arguments.text is not None:
+            obj_SymEnc.encrypt_data("text", text=arguments.text)
+            print(f" Encrypted data:\n{obj_SymEnc.encrypted_text}")
+
+        if arguments.file is not None and arguments.out is not None:
+            obj_SymEnc.encrypt_data("file", input_file=arguments.file, output_file=arguments.out)
+            print(f" Wrote encrypted data to: {arguments.out}")
+        else:
+            print(" Error: Requires input file (-f) along with output file (-o)")
+            exit(0)
+
 

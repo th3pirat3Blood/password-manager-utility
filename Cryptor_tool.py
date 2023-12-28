@@ -5,53 +5,61 @@
 """
 
 from cryptography.fernet import Fernet
+import string
+import random
 
 
 class SymEnc:
-    def __init__(self, f_name="sym_key.key", k=None):
-        if k is None:
-            self.key = Fernet.generate_key()
-        else:
+    def __init__(self, f_name=None, k=None):
+        if k is None and f_name is None:
+            self.key = Fernet.generate_key().decode()
+            key_file = "".join([chr(x) for x in range(65, 90)]) + ".key"
+            with open(key_file, "w") as f:
+                f.write(self.key)
+            print(f" Key written to {key_file}")
+        elif f_name is not None:
+            # extract key from file
+            with open(f_name, "r") as f:
+                self.key = f.read()
+        elif k is not None:
             self.key = k
 
         self.encrypted_text = ""
-        self.filename = f_name
+        self.decrypted_text = ""
         self.f_obj = Fernet(self.key)
 
-    def display_sym_key(self):
-        print("Generated key: ", self.key.decode())
+    def encrypt_data(self, choice, text=None, input_file=None, output_file=None):
+        if choice == "text":
+            self.encrypted_text = self.f_obj.encrypt(text.encode()).decode()
+        if choice == "file":
+            with open(input_file, "r") as f:
+                data = f.read()
+            self.encrypted_text = self.f_obj.encrypt(data.encode()).decode()
+            with open(output_file, "w") as f:
+                f.write(self.encrypted_text)
 
-    def put_sym_key_to_file(self, file_name):
-        with open(file_name, "w") as f:
-            f.write(self.key.decode())
+    def decrypt_data(self, choice, text=None, input_file=None, output_file=None):
+        if choice == "text":
+            self.decrypted_text = self.f_obj.decrypt(text.encode()).decode()
+        if choice == "file":
+            with open(input_file, "r") as f:
+                data = f.read()
+            self.decrypted_text = self.f_obj.decrypt(data.encode()).decode()
+            with open(output_file, "w") as f:
+                f.write(self.decrypted_text)
 
-    def get_sym_key_from_file(self, file_name):
-        with open(file_name, "r") as f:
-            got_key = f.read()
-        print("Got key: ", got_key)
 
-    def encrypt_file(self, file_name):
+class PasswordGenerator:
+    def __init__(self, choice=3, length=12):
+        self.length = length
+        if choice == 1:
+            self.charset = string.ascii_letters
+        if choice == 2:
+            self.charset = string.ascii_letters + string.digits
+        if choice == 3:
+            self.charset = string.ascii_letters + string.digits + "~`!@#$%^&*()_-+=?/<>{}[]"
 
-        with open(file_name, "r") as f:
-            data = f.read()
-
-        # Encrypt whole file content
-        encrypted_data = self.f_obj.encrypt(data.encode())
-
-        with open(file_name+".enc", "w") as f:
-            f.write(encrypted_data.decode())
-
-        print(f"Data of {file_name} encrypted and stored in {file_name}.enc")
-
-    def decrypt_file(self, file_name):
-        with open(file_name, "r") as f:
-            encrypted_data = f.read()
-
-        # Decrypt whole file
-        decrypted_text = self.f_obj.decrypt(encrypted_data.encode())
-
-        with open(file_name+".dec", "w") as f:
-            f.write(decrypted_text.decode())
-
-        print(f"Decrypted data in {file_name}.dec")
+    def generate(self):
+        password = "".join([self.charset[random.randint(0, len(self.charset)-1)] for x in range(self.length)])
+        return password
 
