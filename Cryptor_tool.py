@@ -13,7 +13,7 @@ class SymEnc:
     def __init__(self, f_name=None, k=None):
         if k is None and f_name is None:
             self.key = Fernet.generate_key().decode()
-            key_file = "".join([chr(x) for x in range(65, 90)]) + ".key"
+            key_file = "samples/" + "".join([chr(random.randint(97,122)) for x in range(1, 5)]) + ".key"
             with open(key_file, "w") as f:
                 f.write(self.key)
             print(f" Key written to {key_file}")

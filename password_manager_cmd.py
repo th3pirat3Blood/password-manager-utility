@@ -73,11 +73,11 @@ if __name__ == "__main__":
         obj_SymEnc = SymEnc(f_name=arguments.key_file, k=arguments.key)
         if arguments.text is not None:
             obj_SymEnc.encrypt_data("text", text=arguments.text)
-            print(f" Encrypted data:\n{obj_SymEnc.encrypted_text}")
+            print(f" Decrypted data:\n{obj_SymEnc.encrypted_text}")
 
         if arguments.file is not None and arguments.out is not None:
             obj_SymEnc.encrypt_data("file", input_file=arguments.file, output_file=arguments.out)
-            print(f" Wrote encrypted data to: {arguments.out}")
+            print(f" Wrote Decrypted data to: {arguments.out}")
         else:
             print(" Error: Requires input file (-f) along with output file (-o)")
             exit(0)
