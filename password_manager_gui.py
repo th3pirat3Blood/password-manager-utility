@@ -27,7 +27,7 @@ class GuiWindow(QMainWindow):
         self.radio_btn1_obj = QtWidgets.QRadioButton(self)
         self.radio_btn2_obj = QtWidgets.QRadioButton(self)
         self.radio_btn3_obj = QtWidgets.QRadioButton(self)
-        self.label2_obj = QLabel(" Choose Length")
+        self.label2_obj = QLabel(" Choose password length")
         self.combo_box_obj = QtWidgets.QComboBox(self)
         self.generate_button = QtWidgets.QPushButton(self)
         self.label3_obj = QLabel("PASSWORD")
