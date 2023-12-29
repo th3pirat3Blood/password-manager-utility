@@ -1,16 +1,15 @@
 # Password Manager Utility
+---
 
 ## Description
 This project is aimed at providing a tool for safe password storage and generation.
 The tool supports both command line interface and GUI mode.
----
 
 ## Table of Contents
 
 * [Command line usage]()
 
 * [GUI tool usage]()
-
 
 ## Command line usage
 
@@ -66,18 +65,29 @@ For generating new password of length 12 using alphabets, decimals and special c
 python3 password_manager_cmd.py -g --length 12 --all
 ```
 
+### Encrypting
 
-For saving password to the list of old passwords
+For encrypting text without a key
+
 ```bash
-python3 password_manaager.py -s <password> <password_filename.enc> <key>
+python3 password_manager_cmd.py -e -t "some_text_here"
 ```
 
-For getting all the passwords from the list
+For encrypting text with a key
+
 ```bash
-python3 password_manager.py -d -a <password_filename.enc> <key>
+python3 password_manager_cmd.py -e -k "some_key" -t "some_text"
 ```
 
-For getting single password from list
+For encrypting text with a key located inside a file
+
 ```bash
-python3 password_manager.py -d -u <username/email_id> <password_filename.enc> <key>
+python3 password_manager_cmd.py -e -kf "path_to_key_file" -t "some_text" 
 ```
+
+For encrypting a file with a key located inside a file with output to a user defined file
+
+```bash
+python3 password_manager_cmd.py -e -kf "path_to_key_file" -f "path_to_file_to_encrypt" -o "path_for_encrypted_file_output"
+```
+
