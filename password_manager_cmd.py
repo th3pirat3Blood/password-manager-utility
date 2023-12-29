@@ -54,10 +54,21 @@ if __name__ == "__main__":
             print(" Error: Encryption requires either a text (-t) or a file (-f) to encrypt")
             exit(0)
         obj_SymEnc = SymEnc(f_name=arguments.key_file, k=arguments.key)
+        # check if text is supplied
         if arguments.text is not None:
             obj_SymEnc.encrypt_data("text", text=arguments.text)
+            # check if output file is supplied
+            if arguments.out is not None:
+                obj_filehandler = FileHandler(f_name=arguments.out)
+                # obj_filehandler.write_to_file(obj_SymEnc.encrypted_text)
+                # print(f" Encrypted data stored in: {obj_filehandler.filename}")
+            else:
+                obj_filehandler = FileHandler()
+            obj_filehandler.write_to_file(obj_SymEnc.encrypted_text)
+            print(f" Encrypted data stored in: {obj_filehandler.filename}")
             print(f" Encrypted data:\n{obj_SymEnc.encrypted_text}")
 
+        # check if file is supplied or not
         if arguments.file is not None and arguments.out is not None:
             obj_SymEnc.encrypt_data("file", input_file=arguments.file, output_file=arguments.out)
             print(f" Wrote encrypted data to: {arguments.out}")
@@ -71,12 +82,13 @@ if __name__ == "__main__":
             print(" Error: Decryption requires either a text (-t) or a file (-f) to decrypt")
             exit(0)
         obj_SymEnc = SymEnc(f_name=arguments.key_file, k=arguments.key)
+
         if arguments.text is not None:
-            obj_SymEnc.encrypt_data("text", text=arguments.text)
+            obj_SymEnc.decrypt_data("text", text=arguments.text)
             print(f" Decrypted data:\n{obj_SymEnc.encrypted_text}")
 
         if arguments.file is not None and arguments.out is not None:
-            obj_SymEnc.encrypt_data("file", input_file=arguments.file, output_file=arguments.out)
+            obj_SymEnc.decrypt_data("file", input_file=arguments.file, output_file=arguments.out)
             print(f" Wrote Decrypted data to: {arguments.out}")
         else:
             print(" Error: Requires input file (-f) along with output file (-o)")
